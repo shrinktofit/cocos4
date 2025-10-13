@@ -169,6 +169,7 @@ class ClipMotionEval implements MotionEval {
 
     public reenter (): void {
         this._frameEventEval?.reset();
+        this._clipEval?.reset();
     }
 
     /**
