@@ -334,6 +334,10 @@ module.exports = {
                     name: 'Skip Validation',
                     title: 'Skip validation of the model file.',
                 },
+                importVortexUniqueId: {
+                    name: 'Import Vortex Unique ID',
+                    title: 'Whether to import Vortex unique ID.',
+                },
                 mountAllAnimationsOnPrefab: {
                     name: 'Mount All Animations Onto Prefab',
                 },
