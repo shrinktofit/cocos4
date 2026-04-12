@@ -1,0 +1,9 @@
+import * as buildTimeConstants from <%- JSON.stringify(constantsModule) %>;
+import { config } from <%- JSON.stringify(storeModule) %>;
+
+export default {
+  buildTimeConstants,
+  get platform() {
+    return config.platform;
+  },
+};

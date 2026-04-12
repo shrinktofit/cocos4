@@ -1,6 +1,6 @@
 import { IScreenOptions, SafeAreaEdge, screenAdapter as screenAdapterPal } from 'pal/screen-adapter';
 import { Orientation, PalScreenEvent } from '../../pal/screen-adapter/enum-type';
-import { Size } from '../core';
+import { Size } from '../core/math/size';
 
 type ScreenAdapterType = typeof screenAdapterPal;
 

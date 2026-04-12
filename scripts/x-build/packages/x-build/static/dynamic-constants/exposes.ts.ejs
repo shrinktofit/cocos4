@@ -1,0 +1,42 @@
+import { config } from '<%- storeModule %>';
+
+function tryDefineGlobal (name, value) {
+    const _global = typeof window === 'undefined' ? global : window;
+    if (typeof _global[name] === 'undefined') {
+        return (_global[name] = value);
+    } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return _global[name];
+    }
+}
+
+function detectConstant (configName, globalName, value) {
+    if (config[configName] != null) {
+        return config[configName];
+    }
+    const _global = typeof window === 'undefined' ? global : window;
+    if (typeof _global[globalName] !== 'undefined') {
+        return _global[globalName];
+    }
+    if (config.detectConstants === true) {
+        return tryDefineGlobal(globalName, value);
+    }
+    return false;
+}
+
+function defined (name) {
+    const _global = typeof window === 'undefined' ? global : window;
+    return typeof _global[name] === 'object';
+}
+
+export const TEST = detectConstant('TEST', 'CC_TEST', defined('tap') || defined('QUnit'));
+export const EDITOR = tryDefineGlobal('CC_EDITOR', defined('Editor') && defined('process') && ('electron' in process.versions));
+export const PREVIEW = detectConstant('PREVIEW', 'CC_PREVIEW', !EDITOR);
+export const JSB = tryDefineGlobal('CC_JSB', defined('jsb'));
+export const NATIVE = JSB;
+export const DEV = detectConstant('DEV', 'CC_DEV', true);
+export const EDITOR_NOT_IN_PREVIEW = EDITOR && !tryDefineGlobal('isPreviewProcess',false);
+
+<% constants.forEach((constant) => { -%>
+export const <%- constant.name %> = <% if (constant.category === 'platform') { -%>config.platform === '<%- constant.name %>'<% } else if (constant.configurable) { -%>config[<%- JSON.stringify(constant.name) %>]<% } else { -%><%- constant.value %><% } %>;
+<% }) -%>

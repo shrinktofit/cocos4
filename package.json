@@ -25,6 +25,7 @@
     "build:cli-min": "npm run build:debug-infos && node ./scripts/build-cli-minified",
     "build:headless": "node ./scripts/build-headless.js",
     "build:headless:min": "node ./scripts/build-headless.js --min",
+    "build:test-purpose": "node ./scripts/build-test-purpose.js",
     "clear": "node ./scripts/clear-cache.js",
     "clear:platform": "node ./native/utils/clear-platform.js && node ./scripts/clear-file.js",
     "test": "tsc --noEmit && jest",
