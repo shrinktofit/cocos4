@@ -1,11 +1,7 @@
-const { join } = require('path');
-const { ensureDir, emptyDir, outputFile } = require('fs-extra');
-const { magenta } = require('chalk');
+// @ts-check
 
-const { buildEngine, StatsQuery } = require('@cocos/ccbuild');
-
-const prefix = ''.padStart(20, '=');
-console.log(magenta(`${prefix} Build H5 source ${prefix}`));
+const { join } = require('node:path');
+const { ensureDir, emptyDir } = require('fs-extra');
 
 const min = process.argv.includes('--min');
 
@@ -14,34 +10,36 @@ const min = process.argv.includes('--min');
     await ensureDir(outDir);
     await emptyDir(outDir);
 
+    // eslint-disable-next-line import/extensions
+    const { build } = await require('./x-build/packages/x-build/lib/index.js');
+
     const platform = 'HEADLESS';
 
-    await buildEngine({
-        engine: join(__dirname, '..'),
-        moduleFormat: 'esm',
-        mode: 'BUILD',
-        platform,
+    await build({
+        engineRepo: join(__dirname, '..'),
         out: outDir,
-        compress: min,
-        sourceMap: true,
-        split: true,
+        format: 'es',
         targets: ['chrome 80'],
+        deprecatedApi: false,
         features: [
             'headless-core',
         ],
-        noDeprecatedFeatures: true,
+        compress: min,
+        sourceMap: true,
+        split: true,
+        preserveModules: true,
     });
 
-    const statsQuery = await StatsQuery.create(join(__dirname, '..'));
-    const mode = 'HEADLESS';
-    const flags = {
-        DEBUG: true,
-    };
-    const ccEnvSource = statsQuery.constantManager.exportStaticConstants({
-        mode,
-        platform,
-        flags,
-    });
-    const ccEnvFile = join(outDir, 'cc-env.js');
-    await outputFile(ccEnvFile, ccEnvSource);
+    // const statsQuery = await StatsQuery.create(join(__dirname, '..'));
+    // const mode = 'HEADLESS';
+    // const flags = {
+    //     DEBUG: true,
+    // };
+    // const ccEnvSource = statsQuery.constantManager.exportStaticConstants({
+    //     mode,
+    //     platform,
+    //     flags,
+    // });
+    // const ccEnvFile = join(outDir, 'cc-env.js');
+    // await outputFile(ccEnvFile, ccEnvSource);
 }()).catch(console.error.bind(console));

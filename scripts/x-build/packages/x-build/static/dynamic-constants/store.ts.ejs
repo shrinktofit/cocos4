@@ -1,0 +1,15 @@
+export const config = {
+  detectConstants: false,
+<% if (hasPlatformConstants) { -%>
+  platform: <%- JSON.stringify(platformDefault) %>,
+<% } -%>
+<% constants.forEach((constant) => { -%>
+<% if (constant.configurable && constant.category !== 'platform') { -%>
+  <%- constant.name %>: <%- JSON.stringify(constant.value) %>,
+<% } -%>
+<% }) -%>
+};
+
+export function configure(opts) {
+  Object.assign(config, opts);
+}

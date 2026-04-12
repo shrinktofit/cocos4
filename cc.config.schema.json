@@ -173,6 +173,10 @@
             "string",
             "number"
           ]
+        },
+        "xBuild": {
+          "$ref": "#/definitions/XBuildConstantInfo",
+          "description": "x-build specific options for dynamic constant generation."
         }
       },
       "required": [
@@ -181,6 +185,24 @@
         "value",
         "internal"
       ],
+      "type": "object"
+    },
+    "XBuildConstantInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "description": "A category marker for constants that share x-build configuration behavior.",
+          "type": "string"
+        },
+        "configurable": {
+          "description": "Whether x-build exposes this constant through the runtime configuration store.",
+          "type": "boolean"
+        },
+        "dynamic": {
+          "description": "Whether x-build emits this constant from a dynamic helper instead of the generated constants loop.",
+          "type": "boolean"
+        }
+      },
       "type": "object"
     },
     "IOptimizeDecorators": {

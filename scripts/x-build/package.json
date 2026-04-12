@@ -1,0 +1,16 @@
+{
+  "name": "x-build",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter=* run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.2.0",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.58.1"
+  }
+}
