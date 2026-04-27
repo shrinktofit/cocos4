@@ -28,7 +28,7 @@ import { array, Pool } from '../core/utils/js';
 import { tryCatchFunctor_EDITOR } from '../core/utils/misc';
 import { invokeOnEnable, createInvokeImpl, createInvokeImplJit, OneOffInvoker, LifeCycleInvoker, InvokeFunc } from './component-scheduler';
 import { legacyCC } from '../core/global-exports';
-import { assert, errorID, getError, log } from '../core/platform/debug';
+import { assert, errorID, getError, log, throwException } from '../core/platform/debug';
 import { NodeEventType } from './node-event';
 import { assertIsTrue } from '../core/data/utils/asserts';
 import type { Component } from './component';
@@ -333,7 +333,7 @@ if (EDITOR || NODEJS) {
         try {
             c.internalOnLoad?.();
         } catch (e) {
-            legacyCC._throw(e);
+            throwException(e);
         }
         c._objFlags |= IsOnLoadCalled;
         _onLoadInEditor(c);
@@ -415,7 +415,7 @@ if (EDITOR || NODEJS) {
             try {
                 comp.resetInEditor(didResetToDefault);
             } catch (e) {
-                legacyCC._throw(e);
+                throwException(e);
             }
         }
     };

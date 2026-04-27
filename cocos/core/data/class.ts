@@ -24,7 +24,7 @@
 */
 
 import { DEV, EDITOR, SUPPORT_JIT, TEST, NODEJS } from 'internal:constants';
-import { errorID, warnID, error } from '../platform/debug';
+import { errorID, warnID, error, throwException } from '../platform/debug';
 import * as js from '../utils/js';
 import { getSuper } from '../utils/js';
 import { BitMask } from '../value-types';
@@ -130,7 +130,7 @@ function getDefault (defaultVal): any {
             try {
                 return defaultVal();
             } catch (e) {
-                legacyCC._throw(e);
+                throwException(e);
                 return undefined;
             }
         } else {

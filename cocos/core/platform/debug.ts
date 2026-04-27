@@ -261,6 +261,14 @@ export function _throw (error_: any): any {
     }
 }
 
+export function throwException (error: unknown): void {
+    // Compatible with legacy behavior
+    if (typeof legacyCC._throw === 'function') {
+        legacyCC._throw(error);
+    }
+    _throw(error);
+}
+
 function getTypedFormatter (type: 'Log' | 'Debug' | 'Warning' | 'Error' | 'Assert'): (id: number, ...args: StringSubstitution[]) => string {
     return (id: number, ...args: StringSubstitution[]): string => {
         const msg = DEBUG ? (debugInfos[id] || 'unknown id') : `${type} ${id}, please go to ${ERROR_MAP_URL}#${id} to see details.`;
