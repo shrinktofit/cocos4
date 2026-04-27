@@ -27,7 +27,7 @@ import { CCObjectFlags } from '../core/data/object';
 import { js } from '../core';
 import { tryCatchFunctor_EDITOR } from '../core/utils/misc';
 import { legacyCC } from '../core/global-exports';
-import { warn, assert } from '../core/platform/debug';
+import { warn, assert, throwException } from '../core/platform/debug';
 import type { Component } from './component';
 
 const fastRemoveAt = js.array.fastRemoveAt;
@@ -251,7 +251,7 @@ export function createInvokeImpl (singleInvoke, fastPath, ensureFlag?): (iterato
             fastPath(iterator, dt);
         } catch (e) {
             // slow path
-            legacyCC._throw(e);
+            throwException(e);
             const array = iterator.array;
             if (ensureFlag) {
                 array[iterator.i]._objFlags |= ensureFlag;
@@ -261,7 +261,7 @@ export function createInvokeImpl (singleInvoke, fastPath, ensureFlag?): (iterato
                 try {
                     singleInvoke(array[iterator.i], dt);
                 } catch (e) {
-                    legacyCC._throw(e);
+                    throwException(e);
                     if (ensureFlag) {
                         array[iterator.i]._objFlags |= ensureFlag;
                     }
