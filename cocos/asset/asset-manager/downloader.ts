@@ -112,7 +112,7 @@ const downloadBundle = (nameOrUrl: string, options: Record<string, any>, onCompl
     const config = `${url}/config.${version ? `${version}.` : ''}json`;
     let out: IConfigOption | null = null;
     let error: Error | null = null;
-    downloader._downloadJson(config, options, (err, response): void => {
+    (downloader.handlers['.json'].bind(downloader) ?? downloadJson)(config, options, (err, response): void => {
         error = err || error;
         out = response as IConfigOption;
         if (out) { out.base = `${url}/`; }
@@ -122,7 +122,7 @@ const downloadBundle = (nameOrUrl: string, options: Record<string, any>, onCompl
     });
 
     const jspath = `${url}/index.${version ? `${version}.` : ''}js`;
-    downloader.downloadScript(jspath, options, (err): void => {
+    (downloader.handlers['.js'].bind(downloader) ?? downloadScript)(jspath, options, (err): void => {
         error = err || error;
         if (++count === 2) {
             onComplete(error, out);
@@ -243,19 +243,33 @@ export class Downloader {
     public downloadFile = downloadFile;
 
     /**
-     * @deprecated Since v3.7, this is an engine internal interface. You can easily implement the functionality of this API using XMLHttpRequest.
-     */
-    public downloadScript = downloadScript;
-
-    /**
      * @engineInternal
      */
     public _downloadArrayBuffer = downloadArrayBuffer;
 
     /**
      * @engineInternal
+     * @deprecated Since v3.7, this is an engine internal interface. You can easily implement the functionality of this API using XMLHttpRequest.
      */
-    public _downloadJson = downloadJson;
+    public get _downloadJson (): DownloadHandler {
+        return this._downloaders['.json'];
+    }
+
+    public set _downloadJson (handler: DownloadHandler) {
+        this._downloaders['.json'] = handler;
+    }
+
+    /**
+     * @engineInternal
+     * @deprecated Since v3.7, this is an engine internal interface. You can easily implement the functionality of this API using XMLHttpRequest.
+     */
+    public get downloadScript (): DownloadHandler {
+        return this._downloaders['.js'];
+    }
+
+    public set downloadScript (handler: DownloadHandler) {
+        this._downloaders['.js'] = handler;
+    }
 
     // default handler map
     private _downloaders: Record<string, DownloadHandler> = {
