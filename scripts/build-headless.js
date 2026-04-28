@@ -14,11 +14,13 @@ const min = process.argv.includes('--min');
     await ensureDir(outDir);
     await emptyDir(outDir);
 
+    const platform = 'HEADLESS';
+
     await buildEngine({
         engine: join(__dirname, '..'),
         moduleFormat: 'esm',
         mode: 'BUILD',
-        platform: 'HEADLESS',
+        platform,
         out: outDir,
         compress: min,
         sourceMap: true,
@@ -32,7 +34,6 @@ const min = process.argv.includes('--min');
 
     const statsQuery = await StatsQuery.create(join(__dirname, '..'));
     const mode = 'HEADLESS';
-    const platform = 'HEADLESS';
     const flags = {
         DEBUG: true,
     };
