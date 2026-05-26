@@ -107,7 +107,7 @@ if ((EDITOR || PREVIEW || NODEJS) && !TEST) {
                         console.warn(`Failed to get file type from URL: ${requestUrl}. Error: ${e}`);
                         text = '';
                     }
-                } 
+                }
                 // 如果网络路径没有配置，或者不是网络路径，或者请求异常，使用AssetDB
                 if (useAssetDB && globalThis.AssetDB) {
                     const meta: { files: string[] } = await globalThis.AssetDB.queryAsset(uuid)?.meta;
@@ -116,10 +116,9 @@ if ((EDITOR || PREVIEW || NODEJS) && !TEST) {
                         text = '.cconb';
                     }
                 }
-            } else {  
-                let previewServer = '';
+            } else {
+                const previewServer = settings.querySettings<string>(SettingsCategory.PATH, 'previewServer') || '';
                 if (NATIVE) {
-                    previewServer = settings.querySettings<string>(SettingsCategory.PATH, 'previewServer') || '';
                     assert(Boolean(previewServer));
                 }
                 text = await fetchText(`${previewServer}/query-extname/${uuid}`) as string;
