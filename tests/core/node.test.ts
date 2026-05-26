@@ -23,11 +23,11 @@ describe(`Node`, () => {
 
     test('get-current-path',() => {
         let scene = new Scene('tempScene');
-        
+
         let node1: Node = new Node();
         node1.name = 'node1';
         node1.setParent(scene);
-        
+
         let node2: Node = new Node();
         node2.name = 'node2';
         node2.setParent(node1);
@@ -87,7 +87,7 @@ describe(`Node`, () => {
         let scene = new Scene('temp');
         let node = new Node();
         node.parent = scene;
-        
+
         node.active = true;
         node.active = undefined;
         expect(node.active).toBe(false);
@@ -147,7 +147,7 @@ describe(`Node`, () => {
         expect(node2.worldMatrix.equals(worldMat)).toBeFalsy();
         expect(Mat4.determinant(node2.worldMatrix)).toBeCloseTo(0, 6);
     });
-    
+
     test('component event', () => {
         let onLoadCalled = false;
         let onDestroyCalled = false;
@@ -167,12 +167,12 @@ describe(`Node`, () => {
         const node = new Node();
         let compParam;
         const addCb = jest.fn((tempComp) => { compParam = tempComp; expect(onLoadCalled).toBeFalsy(); });
-        const removeCb = jest.fn((tempComp) => { 
-            compParam = tempComp; 
-            if (onLoadCalled) { 
-                expect(onDestroyCalled).toBeTruthy(); 
+        const removeCb = jest.fn((tempComp) => {
+            compParam = tempComp;
+            if (onLoadCalled) {
+                expect(onDestroyCalled).toBeTruthy();
             } else {
-                expect(onDestroyCalled).toBeFalsy(); 
+                expect(onDestroyCalled).toBeFalsy();
             }
         });
         node.on(NodeEventType.COMPONENT_ADDED, addCb);
@@ -436,7 +436,7 @@ describe(`Node`, () => {
 
         let father = new Node('father');
         father.on('event2', () => {
-            
+
         }, null, true);
 
         father.on('event1', () => {
@@ -466,7 +466,7 @@ describe(`Node`, () => {
         son.setWorldPosition(Vec3.ZERO);
         expect(son.getPosition()).toEqual(new Vec3(-100, -100, 0));
     });
-    
+
     test ('setWorldRotation', ()=> {
         let parent = new Node();
 
